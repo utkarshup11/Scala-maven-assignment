@@ -6,13 +6,14 @@
 
     <groupId>com.knoldus</groupId>
     <artifactId>Scala-maven-assignment</artifactId>
+    <packaging>jar</packaging>
     <version>1.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <scala.version>2.13.5</scala.version>
-        <scala.compat.version>2.11</scala.compat.version>
+        <scala.version>2.13.0</scala.version>
+        <scala.compat.version>2.13.0</scala.compat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -89,6 +90,60 @@
                         <id>test</id>
                         <goals>
                             <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.scoverage</groupId>
+                <artifactId>scoverage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <scalaVersion>2.13.0</scalaVersion>
+                    <highlighting>true</highlighting>
+                    <minimumCoverage>0</minimumCoverage>
+                    <failOnMinimumCoverage>true</failOnMinimumCoverage>
+                    <aggregate>true</aggregate>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>scoverage_unit</id>
+                        <goals>
+                            <goal>check</goal> <!-- or integration-check -->
+                        </goals>
+                        <phase>prepare-package</phase> <!-- or any other phase -->
+                    </execution>
+                    <execution>
+                        <id>scoverage_integration</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.scalastyle</groupId>
+                <artifactId>scalastyle-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <configuration>
+                    <failOnViolation>true</failOnViolation>
+                    <failOnWarning>false</failOnWarning>
+                    <verbose>false</verbose>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
+                    <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
+                    <configLocation>${basedir}/scalastyle-config.xml</configLocation>
+                    <outputFile>${project.basedir}/target/scalastyle-output.xml</outputFile>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
